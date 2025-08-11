@@ -13,49 +13,49 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ContextConfiguration(locations = "classpath:mylab-order-di.xml")
 public class OrderSpringTest {
 
+    // ShoppingCart와 OrderService 클래스를 Injection 받습니다.
     @Autowired
     private ShoppingCart shoppingCart;
 
     @Autowired
     private OrderService orderService;
-    
-    @Autowired
-    private Product product1;
 
     /**
      * ShoppingCart 스프링Bean을 테스트 하는 메서드
      */
     @Test
-    public void testShoppingCart() {
+    void testShoppingCart() {
+        // shoppingCart 객체가 Null 이 아닌지 검증하세요.
         assertNotNull(shoppingCart, "ShoppingCart Bean이 null입니다.");
         System.out.println("주입된 ShoppingCart: " + shoppingCart);
 
-        // 장바구니에 상품 2개가 들어있는지 확인하는 것은 동일합니다.
+        // shoppingCart.getProducts().size() 를 검증하세요.
         assertEquals(2, shoppingCart.getProducts().size(), "Product 리스트의 개수가 2가 아닙니다.");
         System.out.println("포함된 상품 개수: " + shoppingCart.getProducts().size());
         
-        // 주입된 product1의 이름이 "노트북"인지 추가로 확인해 볼 수 있습니다.
-        assertEquals("노트북", product1.getName());
-        System.out.println("주입된 Product1: " + product1);
+        // shoppingCart.getProducts().get(0).getName() 이 "노트북" 인지 검증하세요.
+        assertEquals("노트북", shoppingCart.getProducts().get(0).getName(), "첫 번째 상품의 이름이 일치하지 않습니다.");
+        System.out.println("첫 번째 상품 이름: " + shoppingCart.getProducts().get(0).getName());
+        
+        // shoppingCart.getProducts().get(1).getName() 이 "스마트폰" 인지 검증하세요.
+        assertEquals("스마트폰", shoppingCart.getProducts().get(1).getName(), "두 번째 상품의 이름이 일치하지 않습니다.");
+        System.out.println("두 번째 상품 이름: " + shoppingCart.getProducts().get(1).getName());
     }
 
     /**
      * OrderService 스프링Bean을 테스트 하는 메서드
      */
     @Test
-    public void testOrderService() {
+    void testOrderService() {
+        // OrderService Bean 주입 검증
         assertNotNull(orderService, "OrderService Bean이 null입니다.");
-        System.out.println("주입된 OrderService: " + orderService);
-
-        assertNotNull(orderService.getShoppingCart(), "OrderService의 shoppingCart가 null입니다.");
-        System.out.println("OrderService가 참조하는 ShoppingCart: " + orderService.getShoppingCart());
         
-        // *** 이 부분이 수정되었습니다 ***
-        // 주문 총액 계산이 새로운 가격에 맞게 동작하는지 확인합니다.
-        // 노트북(1500000) + 스마트폰(800000) = 2300000.0
+        // OrderService가 ShoppingCart를 제대로 주입받았는지 검증
+        assertNotNull(orderService.getShoppingCart(), "OrderService의 shoppingCart가 null입니다.");
+        
+        // 주문 총액 계산 기능 검증
         double expectedTotalPrice = 1500000.0 + 800000.0;
         double actualTotalPrice = orderService.calculateOrderTotal();
-
         assertEquals(expectedTotalPrice, actualTotalPrice, "주문 총액이 일치하지 않습니다.");
         System.out.println("계산된 주문 총액: " + actualTotalPrice);
     }
