@@ -1,5 +1,5 @@
 package myspring.di.annot;
 
-public interface Printer {
+public interface PrinterBean {
 	public void print(String message);
 }

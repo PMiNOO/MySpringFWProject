@@ -18,12 +18,22 @@ public class HelloSpringTest {
 	@Qualifier("helloC")
 	Hello hello;
 	
+	
+	//전략1 Constructor Injection, Setter Injection 테스트
 	@Test
 	void helloBeanByConstructor() {
 		System.out.println(hello.sayHello());
 		assertEquals("Hello 생성자", hello.sayHello());
 		
 		hello.print();
+		
+		assertEquals(3, hello.getNames().size());
+		
+//		for(String name: hello.getNames()) {
+//			System.out.println(name);
+//		}
+		
+		
 	}
 	
 }
