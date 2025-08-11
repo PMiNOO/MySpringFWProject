@@ -1,4 +1,4 @@
-package myspring.di.xml;
+package myspring.di.annot;
 
 public class ConsolePrinter implements Printer {
 	public ConsolePrinter() {
